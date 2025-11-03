@@ -22,6 +22,7 @@
 
 ### Overview
 **GenomicResistancePredictor** is a Python-based bioinformatics tool designed to predict resistance des souches bactériennes à différents antibiotiques en fonction des mutations génétiques présentes dans leur génome. It integrates genomic data, machine learning techniques, and bioinformatics algorithms, the platform will not only be able to predict resistance but also visualize the impact of specific genetic mutations.
+
 ---
 
 ### Core Fonctionalities
@@ -29,6 +30,7 @@
 - **Mutation Identification**: Analysis of specific genetic variations that influence resistance, with interactive visualizations showing mutation locations.
 - **Results Visualization**: Interactive graphs (heatmaps, curves, bar charts) to examine the relationships between mutations and resistance.
 - **Web Interface**: Use of Dash or Flask to create a web application allowing users to submit data and view results.
+- 
 ---
 
 ### Data Collection
@@ -37,6 +39,7 @@ The data needed to train the model comes from several public databases, such as:
 - **Ensembl Bacteria**: Annotated bacterial genomes.
 - **PATRIC**: Database of pathogens with resistance information.
 - **CARD**: Database of antibiotic resistance genes.
+
 ---
 
 ### Project Structure
@@ -90,6 +93,7 @@ genomic-resistance-predictor/
 - **Web Interface Development:**
   - Dash
   - Flask
+  ---
 
 ### Installation
 To work locally with this project, follow the steps below:
