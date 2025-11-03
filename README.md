@@ -30,7 +30,7 @@
 - **Mutation Identification**: Analysis of specific genetic variations that influence resistance, with interactive visualizations showing mutation locations.
 - **Results Visualization**: Interactive graphs (heatmaps, curves, bar charts) to examine the relationships between mutations and resistance.
 - **Web Interface**: Use of Dash or Flask to create a web application allowing users to submit data and view results.
-- 
+
 ---
 
 ### Data Collection
