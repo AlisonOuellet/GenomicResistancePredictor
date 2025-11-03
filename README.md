@@ -3,7 +3,6 @@
 **GenomicResistancePredictor 2025:** [https://genomic_resistance_predictor](https://genomic_resistance_predictor)  
 ![Pipeline](https://img.shields.io/badge/pipeline-passed-brightgreen?style=flat-square)
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python)
-![Antibiotic Resistance Predictor](https://img.shields.io/badge/Project-ResistAI-blue?style=for-the-badge&logo=github&logoColor=white)
 ![Status](https://img.shields.io/badge/status-active-brightgreen?style=flat-square)
 ![Last Commit](https://img.shields.io/github/last-commit/AlisonOuellet/GenomicResistancePreditor?style=flat-square)
 
