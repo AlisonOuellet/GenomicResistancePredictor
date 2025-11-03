@@ -21,7 +21,7 @@
 ---
 
 ### Overview
-**GenomicResistancePredictor** is a Python-based bioinformatics tool designed to predict resistance des souches bactériennes à différents antibiotiques en fonction des mutations génétiques présentes dans leur génome. It integrates genomic data, machine learning techniques, and bioinformatics algorithms, the platform will not only be able to predict resistance but also visualize the impact of specific genetic mutations.
+**GenomicResistancePredictor** is a Python-based bioinformatics tool designed to predict bacterial strain resistance to different antibiotics based on the genetic mutations present in their genome. It integrates genomic data, machine learning techniques, and bioinformatics algorithms, the platform will not only be able to predict resistance but also visualize the impact of specific genetic mutations.
 
 ---
 
