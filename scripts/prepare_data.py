@@ -86,13 +86,13 @@ for key, bundle in items.items():
         shutil.copy2(chosen["cds"], out_cds)
 
     rec = meta_by_key.get(key, {})
-    organism = rec.get("organism", {}).get("organism_name", "")
-    strain = rec.get("organism", {}).get("infraspecific_names", {}).get("strain", "")
+    organism = rec.get("organism", {}).get("organismName", "")
+    strain = rec.get("organism", {}).get("infraspecificNames", {}).get("strain", "")
     biosample = rec.get("biosample", {}).get("accession", "")
-    level = rec.get("assembly_info", {}).get("assembly_level", "")
-    contigs = rec.get("assembly_info", {}).get("contig_count", "")
-    size = rec.get("annotation_info", {}).get("stats", {}).get("total_sequence_length", "")
-    gc = rec.get("annotation_info", {}).get("stats", {}).get("gc_percent", "")
+    level = rec.get("assemblyInfo", {}).get("assemblyLevel", "")
+    contigs = rec.get("assemblyInfo", {}).get("numberOfContigs", "")
+    size = rec.get("annotationInfo", {}).get("stats", {}).get("totalSequenceLength", "")
+    gc = rec.get("annotationInfo", {}).get("stats", {}).get("gcPercent", "")
 
     rows.append({
         "accession": acc_with_ver,
@@ -103,10 +103,10 @@ for key, bundle in items.items():
         "organism": organism,
         "strain": strain,
         "biosample": biosample,
-        "assembly_level": level,
-        "contig_count": contigs,
+        "assemblyLevel": level,
+        "numberOfContigs": contigs,
         "genome_size_bp": size,
-        "gc_percent": gc,
+        "gcPercent": gc,
     })
 
 meta_csv = os.path.join(META, "metadata.csv")

@@ -29,8 +29,10 @@ def filter_quality(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 # Keep complete and non-redundant samples
-def deduplicate_samples():
-    pass
+def deduplicate_samples(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.drop_duplicates(subset=['sample_id'])
+    df = df.dropna(subset=['resistance_label'])  # enlever les échantillons sans label
+    return df
 
 # Convert FASTA format into analyzable formats for ML
 def convert_fasta():
