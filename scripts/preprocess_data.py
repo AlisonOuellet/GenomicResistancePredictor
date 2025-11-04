@@ -18,7 +18,7 @@ DNA_ALPHABET = "ACGTN" # nucleic acids + N (unknown)
 AA_ALPHABET = "ACDEFGHIKLMNPQRSTVWY" # 20 standard amino acids
 
 # Paths
-PROJECT_ROOT = Path(__file__).resolve().parents[1]   # scripts/ -> racine du repo
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # repo root
 DATA = PROJECT_ROOT / "data"
 PROC = DATA / "processed_data"
 META_D = PROC / "metadata"
@@ -115,11 +115,11 @@ def filter_quality(df: pd.DataFrame) -> pd.DataFrame:
 
 # Keep complete and non-redundant samples
 def deduplicate_samples(df: pd.DataFrame) -> pd.DataFrame:
-    # priorité: GCF puis moins de contigs puis niveau d’assemblage
+    # priority: GCF then fewer contigs then higher assembly level
     rank_map = {"complete genome": 3, "chromosome": 2, "scaffold": 1, "contig": 0}
     def _score(row):
         src = 1 if str(row.get("chosen_source", "")).upper() == "GCF" else 0
-        contigs = -float(row.get("numberOfContigs", 1e9) or 1e9)  # moins c'est mieux
+        contigs = -float(row.get("numberOfContigs", 1e9) or 1e9)  # less is better
         level = rank_map.get(str(row.get("assemblyLevel", "")).lower(), -1)
         return (src, contigs, level)
     df = df.copy()
@@ -204,7 +204,7 @@ def fasta_to_vectors(parquet_path: Path,
         "onehot": onehots.astype(np.float32),      # [N, L, |alphabet|]
         "kmer": X_kmer.astype(np.float32),         # [N, |V|]
         "kmer_vocab": np.array(vocab, dtype=object),
-        "kmer_docs": np.array(docs, dtype=object)  # pour TF-IDF ultérieur
+        "kmer_docs": np.array(docs, dtype=object)  # for TF-IDF
     }
 
 # One-hot encoding:
@@ -260,7 +260,7 @@ def embedding_encoding(parquet_path: Path,
     )
     X = vectorizer.fit_transform(docs)
     if X.shape[1] <= 1:
-        # rien à factoriser
+        # nothing to reduce
         emb = X.toarray().astype(np.float32)
     else:
         svd = TruncatedSVD(n_components=min(svd_dim, X.shape[1]-1), random_state=42)
@@ -270,7 +270,7 @@ def embedding_encoding(parquet_path: Path,
         out_name = f"embed_{kind}_k{k}_svd{svd_dim}.npz"
     out_path = FEAT_D / out_name
     np.savez_compressed(out_path, X=emb, accessions=vecs["accessions"])
-    # Sauvegarde des artefacts (vocabulaire + composantes) pour la repro
+    # save artifacts vocab + svd
     vocab_json = FEAT_D / f"embed_{kind}_k{k}_tfidf_vocab.json"
     import json
     with open(vocab_json, "w", encoding="utf-8") as f:
@@ -285,36 +285,28 @@ def embedding_encoding(parquet_path: Path,
 
 # generate tab datasets (X.npy, y.csv) for model training
 def generate_datasets(kind: str = "dna") -> Dict[str, Path]:
-    """
-    Construit rapidement un petit paquet de sorties tabulaires:
-      - sequences_dna.parquet (ou AA si tu veux étendre)
-      - onehot_{kind}.npz
-      - kmer_{kind}.npz
-      - embed_{kind}.npz
-      - samples_index.csv (mapping accessions → meta)
-    """
-    # 1) Charger/filtrer/dédupliquer metadata.csv
+    #  load / filter /deduplicate metadata.csv
     df = read_csv(META_CSV)
     df_f = filter_quality(df)
     df_f = deduplicate_samples(df_f)
-    # export index pour traçabilité
+    # export index for tracking
     idx_csv = FEAT_D / "samples_index.csv"
     cols_keep = [c for c in ["accession", "organism", "strain", "biosample",
                              "assemblyLevel", "numberOfContigs", "gcPercent",
                              "genomic_fasta", "cds_fasta"] if c in df_f.columns]
     df_f[cols_keep].to_csv(idx_csv, index=False)
 
-    # 2) Convertir FASTA → parquet séquences (DNA)
+    # convert FASTA → parquet sequences
     parquet = FEAT_D / "sequences_dna.parquet"
     convert_fasta(metadata_csv=META_CSV, concat_contigs=True, out_path=parquet)
 
-    # 3) One-hot (optionnel, gros)
+    # One-hot
     onehot = encode_sequences(parquet, kind=kind, onehot_len=10_000)
 
-    # 4) k-mer
+    # k-mer
     kmer = kmer_encoding(parquet, kind=kind, k=5)
 
-    # 5) Embedding (TF-IDF+SVD)
+    # Embedding (TF-IDF+SVD)
     embed = None
     try:
         embed = embedding_encoding(parquet, kind=kind, k=6, svd_dim=256,
@@ -322,7 +314,7 @@ def generate_datasets(kind: str = "dna") -> Dict[str, Path]:
     except RuntimeError as e:
         print(f"[WARN] Embedding sauté: {e}")
 
-    # 6) y.csv (placeholder): par défaut, pas d'étiquettes => on met juste accession
+    # y.csv (placeholder): by default, no label => only put accessions
     y_csv = FEAT_D / "y.csv"
     pd.DataFrame({"accession": df_f["accession"].tolist()}).to_csv(y_csv, index=False)
 
