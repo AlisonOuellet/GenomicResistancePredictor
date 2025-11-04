@@ -90,10 +90,10 @@ for key, bundle in items.items():
     strain = rec.get("organism", {}).get("infraspecificNames", {}).get("strain", "")
     biosample = rec.get("biosample", {}).get("accession", "")
     level = rec.get("assemblyInfo", {}).get("assemblyLevel", "")
-    contigs = rec.get("assemblyInfo", {}).get("numberOfContigs", "")
-    size = rec.get("annotationInfo", {}).get("stats", {}).get("totalSequenceLength", "")
-    gc = rec.get("annotationInfo", {}).get("stats", {}).get("gcPercent", "")
-
+    size = rec.get("assemblyStats", {}).get("totalSequenceLength", "")
+    contigs = rec.get("assemblyStats", {}).get("numberOfContigs", "")
+    gc = rec.get("assemblyStats", {}).get("gcPercent", "")
+  
     rows.append({
         "accession": acc_with_ver,
         "key": key,
