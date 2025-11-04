@@ -5,7 +5,6 @@ import pandas as pd
 # load feature windows (X.npy) and labels (y.csv) from processed_data/features/
 def load_data():
 
-
 # divide data into training, validation, and test sets
 def split_data():
 
