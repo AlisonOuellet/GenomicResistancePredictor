@@ -1,36 +1,21 @@
 # Clean and transform data for analysis and model training
+from pathlib import Path
 import pandas as pd 
 
 # Read the CSV file (metadata) 
 metadata = pd.read_csv("~/data/processed_data/metadata/metadata.csv")
 print(metadata)
 
-# Compute relevant statistics from metadata
-def compute_quality_stats(df: pd.DataFrame) -> pd.DataFrame:
-    df['gc_percent'] = (df['gc_content'] / df['genome_length']) * 100
-    return df
-
-# Compute contig count
-def compute_contig_stats(df: pd.DataFrame) -> pd.DataFrame:
-    df['contig_count'] = df['num_contigs']
-    return df
-
-# Compute assembly level
-def compute_assembly_level(df: pd.DataFrame) -> pd.DataFrame:
-    level_map = {1: 'Complete Genome', 2: 'Chromosome', 3: 'Scaffold', 4: 'Contig'}
-    df['assembly_level'] = df['assembly_level_code'].map(level_map)
-    return df
-
 # Filter data based on quality metrics
 def filter_quality(df: pd.DataFrame) -> pd.DataFrame:
-    df = df[df['gc_percent'].between(30, 70)]  # garder GC% entre 30 et 70
-    df = df[df['contig_count'] < 500]          # garder contig_count < 500
-    df = df[df['assembly_level'].isin(['Complete Genome', 'Chromosome'])]  # niveaux acceptés
+    df = df[df['gcPercent'].between(30, 70)]
+    df = df[df['numberOfContigs'] < 500]
+    df = df[df['assemblyLevel'].isin(['Complete Genome', 'Chromosome'])]  # accepted levels
     return df
 
 # Keep complete and non-redundant samples
 def deduplicate_samples(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.drop_duplicates(subset=['sample_id'])
+    df = df.drop_duplicates(subset=['key'])
     df = df.dropna(subset=['resistance_label'])  # enlever les échantillons sans label
     return df
 
