@@ -50,11 +50,16 @@ genomic-resistance-predictor/
 │               
 ├── data/
 │   ├── raw_data/
+│   │     ├── GCF/
+│   │     ├── GCA/
+│   │     └── assembly_data_report_*.jsonl
+│   │
 │   └── processed_data/
 │
 ├── scripts/ 
 │   ├── collect_data.py
 │   ├── preprocess_data.py
+│   ├── prepare_data.py
 │   └── train_model.py
 │
 ├── notebooks/
