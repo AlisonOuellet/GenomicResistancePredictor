@@ -30,25 +30,32 @@ def filter_quality(df: pd.DataFrame) -> pd.DataFrame:
 
 # Keep complete and non-redundant samples
 def deduplicate_samples():
+    pass
 
 # Convert FASTA format into analyzable formats for ML
 def convert_fasta():
+    pass
 
 # sequence into numerical vectors nucleic acids or amino acids
 def fasta_to_vectors():
-
+    pass
 
 # One-hot encoding:
 def encode_sequences():
+    pass
 
 # k-mer encoding:
 def kmer_encoding():
+    pass
 
 # embedding-based encoding:
 def embedding_encoding():
+    pass
 
 # generate tab datasets (X.npy, y.csv) for model training
 def generate_datasets():
+    pass
 
 # save everything into processed_data/features/
 def save_processed_data():
+    pass
